@@ -1,218 +1,398 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pataleshwar Caves - Heritage Visit Report</title>
+    <title>Pataleshwar Caves | Ancient Heritage</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Robust CDN) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
     <style>
+        :root {
+            --bg-color: #0a0908;
+            --text-primary: #f2e9e4;
+            --text-secondary: #9a8c98;
+            --accent-gold: #c9ada7;
+            --accent-dark: #22223b;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #8B4513;
-            --secondary-color: #D2691E;
-            --accent-color: #CD853F;
-            --text-dark: #2c2c2c;
-            --text-light: #666;
-            --bg-light: #FFF8DC;
-            --bg-white: #ffffff;
+        html.lenis {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-color);
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-gold);
+            border-radius: 4px;
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(139, 69, 19, 0.9), rgba(210, 105, 30, 0.8)), url('hero-image.jpg') center/cover;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
+            width: 100%;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        .hero h1 {
-            font-size: 4rem;
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%; /* Taller for parallax */
+            background: url('hero-image.jpg') center/cover no-repeat;
+            filter: brightness(0.6);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .hero-surtitle {
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: var(--accent-gold);
+            /* Removed opacity: 0 for safety */
         }
 
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 7rem);
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .hero-title span {
+            display: block;
+            /* transform handled by JS for safety */
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
             font-weight: 300;
-            margin-top: 1rem;
+             /* Removed opacity: 0 for safety */
         }
 
-        /* Bio Card */
-        .bio-card {
-            background: var(--bg-white);
-            max-width: 600px;
-            margin: -80px auto 0;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        /* Floating Bio Card */
+        .bio-section {
             position: relative;
+            margin-top: -100px; /* Overlap hero */
             z-index: 10;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
         }
 
-        .bio-card h3 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-
-        .bio-info {
+        .bio-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: center;
+            transform: translateY(50px);
+             /* Removed opacity: 0 for safety */
         }
 
-        .bio-item {
-            padding: 0.5rem;
+        .bio-header h3 {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
         }
 
-        .bio-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 0.3rem;
+        .bio-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        .bio-value {
-            color: var(--text-light);
+        .bio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
         }
 
-        /* Container */
+        .bio-item span {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .bio-item p {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* General Layout */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 8rem 2rem;
         }
 
-        /* Section Styling */
-        .section {
-            margin-bottom: 5rem;
+        .section-header {
+            margin-bottom: 4rem;
+            max-width: 800px;
+        }
+
+        .section-tag {
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: block;
         }
 
         .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            position: relative;
-            padding-bottom: 1rem;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: var(--secondary-color);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
         }
 
         /* About Section */
-        .about-content {
-            background: var(--bg-white);
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
         }
 
-        .about-content p {
-            font-size: 1.1rem;
+        .about-text p {
+            font-size: 1.15rem;
             line-height: 1.8;
-            margin-bottom: 1.5rem;
-            text-align: justify;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
         }
 
-        /* Gallery Grid */
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item h4 {
+            font-size: 3rem;
+            color: var(--accent-gold);
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Highlights */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .highlight-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 4px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .highlight-icon {
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .highlight-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Gallery - Masonry-ish */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 400px);
+            gap: 1.5rem;
         }
 
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
+            border-radius: 8px;
+            cursor: pointer;
         }
 
-        .gallery-item:hover {
-            transform: translateY(-10px);
-        }
+        /* Make the grid interesting */
+        .gallery-item:nth-child(1) { grid-column: span 2; }
+        .gallery-item:nth-child(4) { grid-column: span 2; }
 
         .gallery-item img {
             width: 100%;
-            height: 350px;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        .gallery-caption {
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            color: white;
-            padding: 1.5rem 1rem 1rem;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
             transform: translateY(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
-        .gallery-item:hover .gallery-caption {
+        .gallery-item:hover .gallery-overlay {
             transform: translateY(0);
         }
 
-        /* Video Section */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
+        /* Personal Experience */
+        .experience-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #111;
         }
 
-        .video-card {
-            background: var(--bg-white);
-            border-radius: 10px;
+        .exp-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        .exp-img-wrapper {
+            height: 100%;
+            min-height: 600px;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .exp-img-wrapper img {
+            width: 100%;
+            height: 120%; /* For Parallax */
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+        }
+
+        .exp-content {
+            padding: 5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: var(--accent-gold);
+            opacity: 0.3;
+            font-family: serif;
+            margin-bottom: 1rem;
+        }
+
+        .exp-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        /* Videos */
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
         }
 
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%;
-            height: 0;
             background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
         }
 
         .video-wrapper iframe {
@@ -221,361 +401,395 @@
             left: 0;
             width: 100%;
             height: 100%;
+            opacity: 0.8;
+            transition: opacity 0.3s;
         }
 
-        .video-title {
-            padding: 1rem;
-            font-weight: 600;
-            color: var(--primary-color);
+        .video-wrapper:hover iframe {
+            opacity: 1;
         }
 
-        /* Highlights Section */
-        .highlights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .highlight-card {
-            background: var(--bg-white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .highlight-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .highlight-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .highlight-card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .highlight-card p {
-            color: var(--text-light);
-        }
-
-        /* Personal Experience Section */
-        .experience-section {
-            background: var(--bg-white);
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .experience-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-top: 2rem;
-        }
-
-        .experience-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .experience-text h3 {
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
-
-        .experience-text p {
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            text-align: justify;
+        .video-label {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            font-family: 'Cormorant Garamond', serif;
         }
 
         /* Footer */
-        .footer {
-            background: var(--primary-color);
-            color: white;
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem;
             text-align: center;
-            padding: 2rem;
             margin-top: 4rem;
         }
 
-        .footer p {
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
 
-        /* Scroll Down Animation */
-        .scroll-down {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-20px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-        }
-
-        .scroll-down span {
-            display: block;
-            width: 30px;
-            height: 50px;
-            border: 2px solid white;
-            border-radius: 50px;
-            position: relative;
-        }
-
-        .scroll-down span::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            animation: scroll 2s infinite;
-        }
-
-        @keyframes scroll {
-            0% {
-                opacity: 1;
-                top: 10px;
-            }
-            100% {
-                opacity: 0;
-                top: 30px;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-            }
-
-            .bio-info {
-                grid-template-columns: 1fr;
-            }
-
-            .experience-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 2rem 1rem;
-            }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .bio-card { grid-template-columns: 1fr; text-align: center; }
+            .about-layout { grid-template-columns: 1fr; }
+            .gallery-grid { display: flex; flex-direction: column; gap: 1rem; }
+            .gallery-item { height: 300px; }
+            .exp-grid { grid-template-columns: 1fr; }
+            .exp-img-wrapper { height: 300px; min-height: auto; }
+            .exp-content { padding: 2rem; }
+            .video-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
     <!-- Hero Section -->
-    <section class="hero">
-        <h1>Pataleshwar Caves</h1>
-        <p>A Journey Through Ancient Indian Heritage</p>
-        <p class="hero-subtitle">8th Century Rock-Cut Temple | Pune, Maharashtra</p>
-        <div class="scroll-down">
-            <span></span>
+    <header class="hero">
+        <div class="hero-bg" data-speed="0.5"></div>
+        <div class="hero-content">
+            <p class="hero-surtitle">Indian Knowledge Systems</p>
+            <h1 class="hero-title">
+                <span>The Stone</span>
+                <span>Speaketh</span>
+            </h1>
+            <p class="hero-subtitle">An 8th Century Monolithic Marvel</p>
+        </div>
+    </header>
+
+    <!-- Bio Card (Floating) -->
+    <section class="bio-section">
+        <div class="bio-card">
+            <div class="bio-header">
+                <h3>Student Report</h3>
+                <p>Documentation of Heritage Visit</p>
+            </div>
+            <div class="bio-grid">
+                <div class="bio-item">
+                    <span>Name</span>
+                    <p>Omkar Mahesh Deshmukh</p>
+                </div>
+                <div class="bio-item">
+                    <span>PRN</span>
+                    <p>202501080094</p>
+                </div>
+                <div class="bio-item">
+                    <span>Institution</span>
+                    <p>MIT AOE,Alandi, Pune</p>
+                </div>
+                <div class="bio-item">
+                    <span>Date</span>
+                    <p>[29/11/2025]</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Bio Card -->
-    <div class="container">
-        <div class="bio-card">
-            <h3>Student Information</h3>
-            <div class="bio-info">
-                <div class="bio-item">
-                    <div class="bio-label">Name:</div>
-                    <div class="bio-value">[YOUR NAME]</div>
-                </div>
-                <div class="bio-item">
-                    <div class="bio-label">PRN:</div>
-                    <div class="bio-value">[YOUR PRN]</div>
-                </div>
-                <div class="bio-item">
-                    <div class="bio-label">Course:</div>
-                    <div class="bio-value">First Year B.Tech</div>
-                </div>
-                <div class="bio-item">
-                    <div class="bio-label">Subject:</div>
-                    <div class="bio-value">IKS_VM Report Writing</div>
-                </div>
-                <div class="bio-item">
-                    <div class="bio-label">Visit Date:</div>
-                    <div class="bio-value">[DD/MM/YYYY]</div>
-                </div>
-                <div class="bio-item">
-                    <div class="bio-label">Institution:</div>
-                    <div class="bio-value">MIT Academy of Engineering</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- About Section -->
     <div class="container">
-        <section class="section">
-            <h2 class="section-title">About Pataleshwar Caves</h2>
-            <div class="about-content">
-                <p>
-                    The Pataleshwar Caves represent one of the finest examples of rock-cut architecture from ancient India. Built during the 8th century CE under the Rashtrakuta dynasty, this magnificent temple complex is dedicated to Lord Shiva and showcases the incredible engineering prowess and artistic excellence of our ancestors.
-                </p>
-                <p>
-                    What makes this site truly remarkable is that the entire structure is carved from a single massive rock formation. Ancient craftsmen, without the aid of modern machinery, painstakingly removed thousands of tons of basaltic rock to create this monolithic masterpiece. The temple features a unique circular Nandi mandapa, ornate pillared halls, and three rock-cut sanctuaries.
-                </p>
-                <p>
-                    Located in the heart of Pune near the confluence of the Mula and Mutha rivers, Pataleshwar Caves is now a protected monument under the Archaeological Survey of India. Despite being over 1200 years old, the temple continues to be an active place of worship, demonstrating the enduring nature of Indian spiritual traditions.
-                </p>
-            </div>
-        </section>
-
-        <!-- Key Highlights -->
-        <section class="section">
-            <h2 class="section-title">Key Highlights</h2>
-            <div class="highlights-grid">
-                <div class="highlight-card">
-                    <div class="highlight-icon">🏛️</div>
-                    <h3>Monolithic Structure</h3>
-                    <p>Carved entirely from a single rock formation, showcasing ancient engineering excellence</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">⭕</div>
-                    <h3>Circular Nandi Mandapa</h3>
-                    <p>Unique round pavilion with 16 pillars - a rare architectural feature</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">🔊</div>
-                    <h3>Acoustic Excellence</h3>
-                    <p>Natural echo effect designed for amplifying mantras and chants</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">🕉️</div>
-                    <h3>Spiritual Significance</h3>
-                    <p>Underground sanctums symbolizing the inward spiritual journey</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Photo Gallery -->
-        <section class="section">
-            <h2 class="section-title">Photo Gallery</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="image1.jpg" alt="Cave entrance">
-                    <div class="gallery-caption">
-                        <h4>Main Entrance</h4>
-                        <p>The impressive facade of Pataleshwar Caves</p>
+        <div class="about-layout">
+            <div class="about-header">
+                <span class="section-tag">History & Origin</span>
+                <h2 class="section-title">Carved from the <br>Living Rock</h2>
+                
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <h4>8th</h4>
+                        <p>Century CE</p>
                     </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="image2.jpg" alt="Circular Nandi Mandapa">
-                    <div class="gallery-caption">
-                        <h4>Circular Nandi Mandapa</h4>
-                        <p>The unique round structure housing the sacred Nandi</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="image3.jpg" alt="Pillared Hall">
-                    <div class="gallery-caption">
-                        <h4>Pillared Hall</h4>
-                        <p>Rows of intricately carved monolithic pillars</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="image4.jpg" alt="Shiva Linga">
-                    <div class="gallery-caption">
-                        <h4>Shiva Linga</h4>
-                        <p>The original rock-cut Shiva Linga in the central sanctum</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="image5.jpg" alt="Stone Carvings">
-                    <div class="gallery-caption">
-                        <h4>Ancient Carvings</h4>
-                        <p>Detailed sculptures and reliefs from the 8th century</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="image6.jpg" alt="Overall Complex">
-                    <div class="gallery-caption">
-                        <h4>Temple Complex</h4>
-                        <p>Aerial view of the complete cave structure</p>
+                    <div class="stat-item">
+                        <h4>1</h4>
+                        <p>Single Rock</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Personal Experience -->
-        <section class="section">
-            <h2 class="section-title">My Personal Experience</h2>
-            <div class="experience-section">
-                <div class="experience-grid">
-                    <img src="personal-image.jpg" alt="Student at the site" class="experience-image">
-                    <div class="experience-text">
-                        <h3>Reflections from the Visit</h3>
-                        <p>
-                            Standing inside the ancient caves, I was overwhelmed by the realization that these very stones were carved over 1200 years ago. The cool air inside, the natural acoustics that created echoes with every sound, and the profound sense of history made this more than just an educational visit.
-                        </p>
-                        <p>
-                            What struck me most was experiencing the 'gunj' - the natural echo effect within the caves. I could imagine ancient devotees chanting mantras here, their voices resonating through the stone chambers. This wasn't just architecture; it was a carefully designed spiritual experience.
-                        </p>
-                        <p>
-                            This visit transformed my understanding of Indian Knowledge Systems from textbook concepts to lived reality. I now truly appreciate how our ancestors seamlessly integrated science, art, spirituality, and sustainability in their creations.
-                        </p>
-                    </div>
-                </div>
+            
+            <div class="about-text">
+                <p>The Pataleshwar Caves represent one of the finest examples of rock-cut architecture from ancient India. Built during the Rashtrakuta dynasty, this magnificent temple complex is dedicated to Lord Shiva, showcasing the incredible engineering prowess of our ancestors.</p>
+                <p>Without modern machinery, craftsmen removed thousands of tons of basaltic rock to create this monolithic masterpiece. Located in the heart of Pune, it stands as a silent witness to over 1200 years of history.</p>
             </div>
-        </section>
-<!-- Video Documentation -->
-<section class="section">
-    <h2 class="section-title">Video Documentation</h2>
-    <div class="video-grid">
-        <div class="video-card">
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/B3chvLpFVHI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-title">Complete Site Tour</div>
-        </div>
-        <div class="video-card">
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/B3chvLpFVHI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-title">Information Display Recording</div>
         </div>
     </div>
-</section>
+
+    <!-- Highlights Grid -->
+    <div class="container" style="background: rgba(255,255,255,0.02);">
+        <div class="section-header">
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Architectural Highlights</h2>
+        </div>
+        <div class="highlights-grid">
+            <div class="highlight-card">
+                <i data-lucide="layers" class="highlight-icon" size="32"></i>
+                <h3>Monolithic Structure</h3>
+                <p>Carved entirely from a single basalt rock formation, maintaining structural integrity for over a millennium.</p>
+            </div>
+            <div class="highlight-card">
+                <i data-lucide="circle-dot" class="highlight-icon" size="32"></i>
+                <h3>Nandi Mandapa</h3>
+                <p>A rare circular pavilion featuring 16 massive pillars, standing detached from the main cave.</p>
+            </div>
+            <div class="highlight-card">
+                <i data-lucide="mic-2" class="highlight-icon" size="32"></i>
+                <h3>Acoustic Design</h3>
+                <p>Engineered for spiritual resonance; the cave walls amplify chants through natural 'Gunj' (echo).</p>
+            </div>
+            <div class="highlight-card">
+                <i data-lucide="moon" class="highlight-icon" size="32"></i>
+                <h3>Inner Sanctum</h3>
+                <p>The underground garbhagriha symbolizes the journey inward, away from the chaos of the material world.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 Heritage Visit Documentation | MIT Academy of Engineering</p>
-        <p>IKS_VM Report Writing Activity | First Year B.Tech Programme</p>
+    <!-- Gallery -->
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Visual Archive</span>
+            <h2 class="section-title">Glimpses of Heritage</h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="image1.jpg" alt="Cave Entrance">
+                <div class="gallery-overlay">
+                    <h3>Grand Facade</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="image2.jpg" alt="Circular Mandapa">
+                <div class="gallery-overlay">
+                    <h3>Nandi Mandapa</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="image3.jpg" alt="Pillars">
+                <div class="gallery-overlay">
+                    <h3>Pillared Halls</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="image4.jpg" alt="Shiva Linga">
+                <div class="gallery-overlay">
+                    <h3>The Deity</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="image5.jpg" alt="Carvings">
+                <div class="gallery-overlay">
+                    <h3>Ancient Detail</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="image6.jpg" alt="Aerial View">
+                <div class="gallery-overlay">
+                    <h3>Complex View</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Experience (Parallax) -->
+    <section class="experience-container container">
+        <div class="exp-grid">
+            <div class="exp-img-wrapper">
+                <img src="personal-image.jpg" class="parallax-img" data-speed="0.2" alt="Personal Visit">
+            </div>
+            <div class="exp-content">
+                <div class="quote-icon">“</div>
+                <h3 style="margin-bottom: 2rem; font-family: 'Cormorant Garamond'; font-size: 2rem;">A Personal Reflection</h3>
+                <div class="exp-text">
+                    <p>Standing inside the ancient caves, I was overwhelmed by the realization that these very stones were carved over 1200 years ago. The cool air inside and the natural acoustics that created echoes with every sound made this more than just an educational visit.</p>
+                    <br>
+                    <p>What struck me most was experiencing the 'gunj'—the natural echo. I could imagine ancient devotees chanting here. This visit transformed my understanding of Indian Knowledge Systems from textbook concepts to lived reality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos -->
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Documentation</span>
+            <h2 class="section-title">Video Tour</h2>
+        </div>
+        <div class="video-container">
+            <div>
+                <div class="video-wrapper">
+                    <!-- Replace VIDEO_URL_1 with actual embed link -->
+                    <iframe src="https://www.youtube.com/embed/B3chvLpFVHI" title="Tour View" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h4 class="video-label">Complete Site Tour</h4>
+            </div>
+            <div>
+                <div class="video-wrapper">
+                    <!-- Replace VIDEO_URL_2 with actual embed link -->
+                    <iframe src="https://www.youtube.com/embed/B3chvLpFVHI" title="Info Guide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h4 class="video-label">Information Guide</h4>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Heritage Visit Documentation | IKS_VM Activity</p>
+        <p>MIT Academy of Engineering | First Year B.Tech</p>
     </footer>
+
+    <!-- Scripts -->
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+
+    <script>
+        // Safe execution
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Initialize Icons (Safe Check)
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // 2. Smooth Scroll Setup (Lenis) (Safe Check)
+            if (typeof Lenis !== 'undefined') {
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            }
+
+            // 3. GSAP Animations (Safe Check)
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Initialize states (hide them first, then animate)
+                gsap.set(".hero-surtitle, .hero-subtitle, .bio-card, .highlight-card, .about-text p, .exp-content", {
+                    opacity: 0,
+                    y: 30
+                });
+                gsap.set(".hero-title span", {
+                    y: "100%"
+                });
+
+                const tl = gsap.timeline();
+
+                // Hero Animation
+                tl.to(".hero-surtitle", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1
+                })
+                .to(".hero-title span", {
+                    y: 0,
+                    duration: 1.2,
+                    stagger: 0.1,
+                    ease: "power4.out"
+                }, "-=0.8")
+                .to(".hero-subtitle", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1
+                }, "-=0.8")
+                .to(".bio-card", {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                }, "-=0.5");
+
+                // Parallax Effect for Hero Background
+                gsap.to(".hero-bg", {
+                    y: "30%",
+                    scrollTrigger: {
+                        trigger: ".hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // About Section Reveal
+                gsap.to(".about-text p", {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: ".about-layout",
+                        start: "top 75%"
+                    }
+                });
+
+                // Highlights Stagger
+                gsap.to(".highlight-card", {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: ".highlights-grid",
+                        start: "top 80%"
+                    }
+                });
+
+                // Gallery Reveal
+                gsap.from(".gallery-item", {
+                    scale: 0.9,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: ".gallery-grid",
+                        start: "top 80%"
+                    }
+                });
+
+                // Personal Experience Image Parallax
+                gsap.to(".parallax-img", {
+                    y: "-20%",
+                    scrollTrigger: {
+                        trigger: ".experience-container",
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // Text Reveal for Experience
+                gsap.to(".exp-content", {
+                    x: 0, // Reset position
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: ".experience-container",
+                        start: "top 60%"
+                    }
+                });
+            } else {
+                // GSAP failed to load - Ensure content is visible
+                console.warn("GSAP not loaded - Static fallback enabled");
+                document.querySelectorAll('.hero-surtitle, .hero-subtitle, .bio-card, .highlight-card, .about-text p, .exp-content').forEach(el => {
+                    el.style.opacity = 1;
+                    el.style.transform = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
+
